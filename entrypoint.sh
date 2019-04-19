@@ -28,7 +28,7 @@ else
 	echo -e "\nWARNING: You have no database configuration file, either create /config/dbsettings.inc.php or restart this container with the correct environment variables to auto generate the config.\n"
 fi
 
-TZ=${TZ:-"Europe/Amsterdam"}
+TZ=${TZ:-"Australia/Sydney"}
 echo -e "Setting (PHP) time zone to ${TZ}\n"
 sed -i "s#^;date.timezone =.*#date.timezone = ${TZ}#g"  /etc/php/7.*/*/php.ini
 

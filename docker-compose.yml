@@ -1,0 +1,40 @@
+version: "3"
+
+volumes:
+  mariadb:
+  spotweb:
+
+networks:
+  spotweb_network:
+    external: true
+
+services:
+  db:
+    image: mariadb/server:10.3
+    restart: always
+    volumes:
+      - mariadb:/var/lib/mysql/
+    environment:
+      MARIADB_ROOT_PASSWORD: testpassword
+      MARIADB_DATABASE: spotweb_db
+      MARIADB_USER: spotweb_user
+      MARIADB_PASSWORD: securepassword
+    networks:
+      - spotweb_network
+
+  spotweb:
+    build: .
+    volumes: 
+      - spotweb:/config
+    ports:
+      - "8080:80"
+    environment:
+        TZ:
+        SPOTWEB_DB_TYPE: pdo_mysql
+        SPOTWEB_DB_HOST: db
+        SPOTWEB_DB_NAME: spotweb_db
+        SPOTWEB_DB_USER: spotweb_user
+        SPOTWEB_DB_PASS: securepassword
+        SPOTWEB_CRON_RETRIEVE:
+    networks:
+      - spotweb_network

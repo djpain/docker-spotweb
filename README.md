@@ -27,23 +27,10 @@ This will create the necessary database tables and users. Ignore the warning whe
 
 When you are done, exit the container (CTRL/CMD-c) and configure the permanent running container.
 
-### Permanent installation
+### Created docker-compose
 
-	docker run --restart=always -d -p 80:80 \
-		--hostname=spotweb \
-		--name=spotweb \
-		-v <hostdir_where_config_will_persistently_be_stored>:/config \
-		-e 'TZ=Europe/Amsterdam' \
-		-e 'SPOTWEB_DB_TYPE=pdo_mysql' \
-		-e 'SPOTWEB_DB_HOST=<database_server_hostname>' \
-		-e 'SPOTWEB_DB_NAME=spotweb' \
-		-e 'SPOTWEB_DB_USER=spotweb' \
-		-e 'SPOTWEB_DB_PASS=spotweb' \
-		jgeusebroek/spotweb
+still need to get default user and figure out spotweb data store 
 
-Please NOTE that the volume is optional. Only necessary when you have special configuration settings.
-
-You should now be able to reach the spotweb interface on port 80.
 
 ### Automatic retrieval of new spots
 To enable automatic retrieval, you need to setup a cronjob on either the docker host or within the container.
