@@ -7,21 +7,20 @@ FROM php:7.2-fpm-alpine
  #   REFRESHED_AT='2018-04-18'
 
  # Cleanup
+
 RUN apk update && \
 	apk upgrade && \
-	apk add git php7-mysqli php7-pdo_mysql php7-pdo && \
+	apk add git curl curl-dev gettext-dev zip libpng libpng-dev libjpeg-turbo-dev libwebp-dev zlib-dev libxpm-dev && \
     rm -rf /var/lib/apt/lists/* && \
     rm -r /var/www/html && \
     rm -rf /tmp/*
+
+RUN docker-php-ext-install pdo curl pdo_mysql mysqli zip gd gettext
 
 RUN git clone -b master --single-branch https://github.com/spotweb/spotweb.git /var/www/html/spotweb && \
     rm -rf /var/www/html/spotweb/.git && \
     chmod -R 775 /var/www/html/spotweb && \
     chown -R www-data:www-data /var/www/html/spotweb
-
-RUN docker-php-ext-install pdo
-RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install mysqli
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod u+x /entrypoint.sh

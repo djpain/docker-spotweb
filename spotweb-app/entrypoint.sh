@@ -30,6 +30,9 @@ fi
 
 TZ=${TZ:-"Australia/Sydney"}
 echo -e "Setting (PHP) time zone to ${TZ}\n"
+#RUN printf '[PHP]\ndate.timezone = "US/Central"\n' > /usr/local/etc/php/conf.d/tzone.ini
+
+echo "[PHP]\ndate.timezone = ${TZ}"  >> /usr/local/etc/php-fpm.d/tzone.ini
 #sed -i "s#^;date.timezone =.*#date.timezone = ${TZ}#g"  /etc/php/7.*/*/php.ini
 
 if [[ -n "$SPOTWEB_CRON_RETRIEVE" || -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
@@ -45,7 +48,8 @@ if [[ -n "$SPOTWEB_CRON_RETRIEVE" || -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
 fi
 
 # # Run database update
-# /usr/bin/php /var/www/spotweb/bin/upgrade-db.php >/dev/null 2>&1
+sleep 30
+php /var/www/html/spotweb/bin/upgrade-db.php #>/dev/null 2>&1
 
 # # Clean up apache pid (if there is one)
 # rm -rf /run/apache2/apache2.pid

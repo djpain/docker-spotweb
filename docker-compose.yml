@@ -12,6 +12,8 @@ services:
   db:
     image: mariadb/server:10.3
     restart: always
+    ports:
+      - "3306:3306"
     volumes:
       - mariadb:/var/lib/mysql/
     environment:
@@ -22,7 +24,7 @@ services:
     networks:
       - spotweb_network
 
-  web_spotweb:
+  web:
     build: nginx/.
     ports:
       - "8080:80"
@@ -30,7 +32,7 @@ services:
     networks:
       - spotweb_network
 
-  app_spotweb:
+  app:
     build: spotweb-app/.
     volumes: 
       - spotweb:/config
