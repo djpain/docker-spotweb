@@ -22,12 +22,20 @@ services:
     networks:
       - spotweb_network
 
-  spotweb:
-    build: .
+  web_spotweb:
+    build: nginx/.
+    ports:
+      - "8080:80"
+    command: [nginx-debug, '-g', 'daemon off;']
+    networks:
+      - spotweb_network
+
+  app_spotweb:
+    build: spotweb-app/.
     volumes: 
       - spotweb:/config
     ports:
-      - "8080:80"
+      - "9000:9000"
     environment:
         TZ:
         SPOTWEB_DB_TYPE: pdo_mysql
@@ -38,3 +46,4 @@ services:
         SPOTWEB_CRON_RETRIEVE:
     networks:
       - spotweb_network
+
